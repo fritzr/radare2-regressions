@@ -33,6 +33,34 @@ EXPECT=<<RUN
 blx 0x84434
 RUN
 
+NAME=rasm2 arm/thumb branch errors
+BROKEN=1
+FILE=-
+CMDS=<<EXPECT
+!rasm2 -a arm -b 16 'b.n 8'
+!rasm2 -a arm -b 16 'b.w 8'
+!rasm2 -a arm -b 16 'bl 8'
+!rasm2 -a arm -b 16 'blx 8'
+!rasm2 -a arm -b 16 'b.n 9'
+!rasm2 -a arm -b 16 'b.w 9'
+!rasm2 -a arm -b 16 'bl 9'
+!rasm2 -a arm -b 16 'blx 9'
+!rasm2 -a arm -b 16 'b.w 0x1000000'
+!rasm2 -a arm -b 16 'bl 0x1000000'
+!rasm2 -a arm -b 16 'blx 0x1000000'
+!rasm2 -a arm -b 16 'b.w 0x1000004'
+!rasm2 -a arm -b 16 'bl 0x1000004'
+!rasm2 -a arm -b 16 'blx 0x1000004'
+EXPECT=<<RUN
+02e0
+00f002b8
+00f002f8
+00f002e8
+fff3fe97
+fff3fed7
+fff3fec7
+RUN
+
 NAME=2: rasm2
 FILE=-
 CMDS=!rasm2 -a x86 -b 64 -d "5589e583ec2083f8000f8507000000b800000000eb05b80100000083c4205dc3" 
